@@ -199,9 +199,9 @@ class FileService {
     int totalBytes = httpResponse.contentLength;
 
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path; // "/storage/emulated/0/Dcim/"; //
+    String appDocPath = appDocDir.path;
 
-    appDocPath = "/storage/emulated/0/Download";
+    //appDocPath = "/storage/emulated/0/Download";
 
     File file = new File(appDocPath + "/" + fileName);
 

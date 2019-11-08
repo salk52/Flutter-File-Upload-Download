@@ -94,6 +94,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+App_Data
 
 # Visual Studio 2015 cache/options directory
 .vs/

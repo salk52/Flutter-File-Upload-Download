@@ -265,10 +265,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void _downloadFile(model.File file, FileRow fileRow) async {
-    var fileName = await FileService.fileDownload(
-        fileName: file.fileName, onDownloadProgress: fileRow.onDownloadProgress);
-
     try {
+      var fileName = await FileService.fileDownload(
+          fileName: file.fileName, onDownloadProgress: fileRow.onDownloadProgress);
+
       await OpenFile.open(fileName);
     } catch (err) {
       _showSnackBar("Error opening file");
