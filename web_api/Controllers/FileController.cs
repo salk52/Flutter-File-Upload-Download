@@ -14,15 +14,18 @@ namespace web_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[RequestSizeLimit(100 * 1024 * 1024)]
+    //[RequestFormLimits(MultipartBodyLengthLimit = 100 * 1024 * 1024)]
+    [DisableRequestSizeLimit]
     public class FileController : ControllerBase
     {
 
-        public FileController(IHostingEnvironment hostingEnvironment)
+        public FileController(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public IHostingEnvironment _hostingEnvironment { get; }
+        public IWebHostEnvironment _hostingEnvironment { get; }
 
 
         [HttpGet]
@@ -60,8 +63,9 @@ namespace web_api.Controllers
 
 
             if (!System.IO.File.Exists(serverPath))
+            {
                 return NotFound();
-
+            }
 
             string contentType;
             new FileExtensionContentTypeProvider().TryGetContentType(serverPath, out contentType);
@@ -73,7 +77,7 @@ namespace web_api.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Post()
+        public async Task<ActionResult> Post(IFormFile File)
         {
 
             var httpRequest = Request;
@@ -81,9 +85,9 @@ namespace web_api.Controllers
             var isForm = false;
             
             if (httpRequest.ContentType.ToLower().Contains("multipart/form-data"))
+            {
                 isForm = true;
-                       
-            
+            }
 
             if (!ModelState.IsValid)
             {
@@ -112,16 +116,12 @@ namespace web_api.Controllers
 
                         System.Diagnostics.Debug.WriteLine(ex.Message);
                     }
-
-
-
                 }
 
                 return Created("", "");
             }
             else
             {
-
                 var stream = Request.Body;
 
                 var filename = Request.Headers["filename"];
@@ -134,7 +134,6 @@ namespace web_api.Controllers
                 }
 
                 return Ok(new { status = "OK" });
-
             }
         }
 
@@ -150,5 +149,30 @@ namespace web_api.Controllers
 
             return Ok();
         }
+
+        [HttpPost("upload2")]
+        public async Task<IActionResult> Upload2(IFormFileCollection files)
+        {
+            var f = files.ToArray();
+            //Array.ForEach(f, async (file) =>
+            //{
+            //    using var stream = file.OpenReadStream();
+            //    using var newStream = new MemoryStream();
+            //    await stream.CopyToAsync(newStream);
+            //    await ProcessFile(newStream);
+            //});
+            //return RedirectLocal("UploadSuccess");
+
+            var streams = await Task.WhenAll(f.Select(async (file) =>
+            {
+                using var stream = file.OpenReadStream();
+                var newStream = new MemoryStream();
+                await stream.CopyToAsync(newStream);
+                return newStream;
+            }).ToArray());
+
+            return Ok(new { status = "OK" });
+        }
+
     }
 }

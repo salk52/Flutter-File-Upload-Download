@@ -1,26 +1,20 @@
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:upload_download_app/util/custom_http_overrides.dart';
-import 'package:upload_download_app/views/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:upload_download_app/util/services.dart' as services;
+import 'package:upload_download_app/views/app_widget.dart';
 
-void main() {
-  // ENABLE SELFSIGNED CERTIFICATES FOR WHOLE APP
-  // HttpOverrides.global = new CustomHttpOverrides();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(AppWidget());
-}
+  await services.setup();
 
-class AppWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'File Upload/Download Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+  runApp(
+    BetterFeedback(
+      child: MultiProvider(
+        providers: await services.getProviders(),
+        child: const AppWidget(),
       ),
-      home: DefaultTabController(
-        length: 2,
-        child: HomePage(title: 'File Upload/Download Demo'),
-      ),
-    );
-  }
+    ),
+  );
 }

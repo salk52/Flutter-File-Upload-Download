@@ -1,24 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿
 
-namespace web_api
+using Microsoft.AspNetCore.Http.Features;
+
+var builder = WebApplication.CreateBuilder(args);
+
+//builder.Logging.AddConsole();
+
+builder.Services.AddControllers();
+
+//builder.Services.AddDbContext<TodoContext>(opt =>
+//    opt.UseInMemoryDatabase("TodoList"));
+
+builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<FormOptions>(x =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
+    x.ValueLengthLimit = int.MaxValue;
+    x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
+});
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
-    }
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+//{
+//    serverOptions.Limits.MaxRequestBodySize = long.MaxValue;
+//});
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-AlertDialog buildDialog({title, message, confirm, cancel, confirmFn, cancelFn}) {
-  return new AlertDialog(
-    title: title != null ? new Text(title) : null,
-    content: message != null ? new Text(message) : null,
+AlertDialog buildDialog(
+    {title, message, confirm, cancel, confirmFn, cancelFn}) {
+  return AlertDialog(
+    title: title != null ? Text(title) : null,
+    content: message != null ? Text(message) : null,
     actions: <Widget>[
-      confirmFn != null ? new FlatButton(onPressed: confirmFn, child: new Text(confirm)) : null,
-      cancelFn != null ? new FlatButton(onPressed: cancelFn, child: new Text(cancel)) : null
+      if (confirmFn != null)
+        TextButton(onPressed: confirmFn, child: Text(confirm)),
+      if (cancelFn != null)
+        TextButton(onPressed: cancelFn, child: Text(cancel)),
     ],
   );
 

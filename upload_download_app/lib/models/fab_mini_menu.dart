@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FabMiniMenu {
-
-FabMiniMenu({this.icon, this.action});
+  FabMiniMenu({required this.icon, required this.action});
 
   IconData icon;
-  VoidCallback  action;
+  VoidCallback action;
 }

@@ -14,9 +14,7 @@ namespace web_api.Controllers
         [HttpGet]
         public IActionResult Get(string name)
         {
-            return Ok("Running");
-
+            return Ok(new { status = "Running" });
         }
-
     }
 }
