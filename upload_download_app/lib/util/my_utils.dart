@@ -1,4 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'
+    show
+        BuildContext,
+        Colors,
+        DismissDirection,
+        Flexible,
+        Icon,
+        Icons,
+        Row,
+        ScaffoldMessenger,
+        SizedBox,
+        SnackBar,
+        SnackBarBehavior,
+        Text,
+        TextOverflow;
 
 extension MyUtils on BuildContext {
   void showErrorMessage(String error, {int? duration}) {
@@ -8,8 +22,8 @@ extension MyUtils on BuildContext {
         SnackBar(
           content: Row(
             children: [
-              Icon(Icons.warning_rounded, color: Colors.white),
-              SizedBox(
+              const Icon(Icons.warning_rounded, color: Colors.white),
+              const SizedBox(
                 width: 10,
               ),
               Flexible(

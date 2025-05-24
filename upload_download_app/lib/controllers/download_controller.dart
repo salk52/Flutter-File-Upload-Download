@@ -25,8 +25,9 @@ class DownloadController extends ChangeNotifier {
 
   void downloadFile(file_model.File file, FileRow fileRow) async {
     try {
-      var fileName =
-          await FileService.fileDownload2(fileName: file.fileName, onDownloadProgress: fileRow.onDownloadProgress);
+      var fileName = await FileService.fileDownload2(
+          fileName: file.fileName,
+          onDownloadProgress: fileRow.onDownloadProgress);
 
       await OpenFilex.open(fileName);
     } catch (err) {
@@ -53,7 +54,8 @@ class DownloadController extends ChangeNotifier {
   }
 
   void setUploadProgress(int sentBytes, int totalBytes) {
-    double newProgressValue = Util.remap(sentBytes.toDouble(), 0, totalBytes.toDouble(), 0, 1);
+    double newProgressValue =
+        Util.remap(sentBytes.toDouble(), 0, totalBytes.toDouble(), 0, 1);
 
     newProgressValue = double.parse(newProgressValue.toStringAsFixed(2));
 

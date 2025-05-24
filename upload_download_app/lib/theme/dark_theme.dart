@@ -4,7 +4,9 @@ ThemeData darkTheme = ThemeData(
   //colorSchemeSeed: Colors.yellow,
   brightness: Brightness.dark,
   colorScheme: ColorScheme.dark(
-      background: const Color(0xff333333), primary: Colors.grey.shade200, secondary: Colors.grey.shade700),
+      surface: const Color(0xff333333),
+      primary: Colors.grey.shade200,
+      secondary: Colors.grey.shade700),
   inputDecorationTheme: InputDecorationTheme(
       border: UnderlineInputBorder(
           borderRadius: BorderRadius.circular(
@@ -12,8 +14,9 @@ ThemeData darkTheme = ThemeData(
       filled: true,
       fillColor: Colors.grey.shade900),
   snackBarTheme: SnackBarThemeData(backgroundColor: Colors.grey.shade600),
-  appBarTheme: AppBarTheme(backgroundColor: Colors.yellow, foregroundColor: Colors.grey.shade900),
-  tabBarTheme: TabBarTheme(
+  appBarTheme: AppBarTheme(
+      backgroundColor: Colors.yellow, foregroundColor: Colors.grey.shade900),
+  tabBarTheme: TabBarThemeData(
       indicatorColor: Colors.grey.shade900,
       labelColor: Colors.grey.shade900,
       unselectedLabelColor: Colors.grey.shade900.withOpacity(0.5),
@@ -21,13 +24,13 @@ ThemeData darkTheme = ThemeData(
 
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
               const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0)),
-          shape: MaterialStateProperty.all<OutlinedBorder>(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-          overlayColor: MaterialStateProperty.all<Color>(Colors.black26))),
+          shape: WidgetStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0))),
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+          foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
+          overlayColor: WidgetStateProperty.all<Color>(Colors.black26))),
 );
 
    // darkTheme: ThemeData.dark(useMaterial3: true).copyWith(

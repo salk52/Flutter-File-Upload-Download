@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:upload_download_app/services/dialog_service.dart';
@@ -30,7 +29,8 @@ class AppService extends ChangeNotifier {
   proba() {
     locator<DialogService>().showMyDialog(
         title: 'Hello, Dialog!',
-        description: 'This is a dialog.\n\nIt is a dialog.\n\nasasdsdm sdasdas \n\nasdasda gdf gdfg');
+        description:
+            'This is a dialog.\n\nIt is a dialog.\n\nasasdsdm sdasdas \n\nasdasda gdf gdfg');
   }
 
   // ThemeMode _themeMode;

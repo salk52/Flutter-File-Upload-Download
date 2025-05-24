@@ -17,7 +17,8 @@ import 'package:upload_download_app/util/services.dart';
 
 //import 'package:sanitize_filename/sanitize_filename.dart';
 
-typedef OnDownloadProgressCallback = void Function(int receivedBytes, int totalBytes);
+typedef OnDownloadProgressCallback = void Function(
+    int receivedBytes, int totalBytes);
 typedef OnUploadProgressCallback = void Function(int sentBytes, int totalBytes);
 
 class FileService {
@@ -26,19 +27,22 @@ class FileService {
   static HttpClient getHttpClient() {
     HttpClient httpClient = HttpClient()
       ..connectionTimeout = const Duration(seconds: 10)
-      ..badCertificateCallback = ((X509Certificate cert, String host, int port) => trustSelfSigned);
+      ..badCertificateCallback =
+          ((X509Certificate cert, String host, int port) => trustSelfSigned);
 
     return httpClient;
   }
 
-  static String get baseUrl =>
-      locator<PreferencesService>().url; //Provider.of<SettingsController>(locator<BuildContext>(), listen: false).url;
+  static String get baseUrl => locator<PreferencesService>()
+      .url; //Provider.of<SettingsController>(locator<BuildContext>(), listen: false).url;
 
   static fileGetAllMock() {
     return List.generate(
       20,
       (i) => model.File(
-          fileName: 'filename $i.jpg', dateModified: DateTime.now().add(Duration(minutes: i)), size: i * 1000),
+          fileName: 'filename $i.jpg',
+          dateModified: DateTime.now().add(Duration(minutes: i)),
+          size: i * 1000),
     );
   }
 
@@ -74,7 +78,8 @@ class FileService {
     return response;
   }
 
-  static Future<String> fileUpload({required File file, OnUploadProgressCallback? onUploadProgress}) async {
+  static Future<String> fileUpload(
+      {required File file, OnUploadProgressCallback? onUploadProgress}) async {
     //assert(file != null);
 
     //debugger();
@@ -129,7 +134,8 @@ class FileService {
     }
   }
 
-  static Future<String> fileUploadMultipart({required XFile file, OnUploadProgressCallback? onUploadProgress}) async {
+  static Future<String> fileUploadMultipart(
+      {required XFile file, OnUploadProgressCallback? onUploadProgress}) async {
     //assert(file != null);
 
     //debugger();
@@ -142,7 +148,8 @@ class FileService {
 
     int byteCount = 0;
 
-    var multipart = await http.MultipartFile.fromPath(file_util.basename(file.path), file.path);
+    var multipart = await http.MultipartFile.fromPath(
+        file_util.basename(file.path), file.path);
 
     // final fileStreamFile = file.openRead();
 
@@ -159,7 +166,8 @@ class FileService {
 
     request.contentLength = totalByteLength;
 
-    request.headers.set(HttpHeaders.contentTypeHeader, requestMultipart.headers[HttpHeaders.contentTypeHeader]!);
+    request.headers.set(HttpHeaders.contentTypeHeader,
+        requestMultipart.headers[HttpHeaders.contentTypeHeader]!);
 
     Stream<List<int>> streamUpload = msStream.transform(
       StreamTransformer.fromHandlers(
@@ -190,13 +198,16 @@ class FileService {
     var statusCode = httpResponse.statusCode;
 
     if (statusCode ~/ 100 != 2) {
-      throw Exception('Error uploading file, Status code: ${httpResponse.statusCode}');
+      throw Exception(
+          'Error uploading file, Status code: ${httpResponse.statusCode}');
     } else {
       return await readResponseAsString(httpResponse);
     }
   }
 
-  static Future<String> fileDownload({required String fileName, OnUploadProgressCallback? onDownloadProgress}) async {
+  static Future<String> fileDownload(
+      {required String fileName,
+      OnUploadProgressCallback? onDownloadProgress}) async {
     //debugger();
 
     // var checkPermission = await checkPermissionStatus();
@@ -211,7 +222,8 @@ class FileService {
 
     final request = await httpClient.getUrl(Uri.parse(url));
 
-    request.headers.add(HttpHeaders.contentTypeHeader, "application/octet-stream");
+    request.headers
+        .add(HttpHeaders.contentTypeHeader, "application/octet-stream");
 
     var httpResponse = await request.close();
 
@@ -272,16 +284,17 @@ class FileService {
     return completer.future;
   }
 
-  static Future<String> fileDownload2({required String fileName, OnUploadProgressCallback? onDownloadProgress}) async {
+  static Future<String> fileDownload2(
+      {required String fileName,
+      OnUploadProgressCallback? onDownloadProgress}) async {
     final url = Uri.encodeFull('$baseUrl/api/file/$fileName');
 
-    var appDocDir = await getExternalStorageDirectory();
+    var appDocDir =
+        await getApplicationDocumentsDirectory(); //getExternalStorageDirectory();
 
-    appDocDir = Directory('/storage/emulated/0/Download');
+    //appDocDir = Directory('/storage/emulated/0/Download');
 
     var appDocPath = appDocDir.path;
-
-    //var fullFilename = "$appDocPath/${sanitizeFilename(fileName)}";
 
     var fullFilename = "$appDocPath/$fileName";
 
@@ -291,9 +304,8 @@ class FileService {
 
     // print("-----------------------------------");
     // print(fullFilename);
-    // print(fullFilename2);
 
-    Dio dio = Dio();
+    var dio = Dio();
 
     await dio.download(
       url,
